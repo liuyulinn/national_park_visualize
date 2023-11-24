@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>National Parks Map</title>
+    <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY"></script>
+    <style>
+        #map {
+            height: 600px;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+    <div id="map"></div>
+    <script>
+        var parksData = [
+    {
+        "name": "Olympic National Park",
+        "rank": "1",
+        "location": "Washington",
+        "score": 48.0,
+        "accessibility": 10.0,
+        "recreation": 10.0,
+        "crowds": 9.0,
+        "amenities": 9.0,
+        "scenery": 10.0,
+        "lat": 47.8021067,
+        "lng": -123.6043524
+    },
+    {
+        "name": "Grand Teton National Park",
+        "rank": "2",
+        "location": "Wyoming",
+        "score": 47.0,
+        "accessibility": 9.0,
+        "recreation": 10.0,
+        "crowds": 8.0,
+        "amenities": 10.0,
+        "scenery": 10.0,
+        "lat": 43.7904282,
+        "lng": -110.6817627
+    },
+    {
+        "name": "Mount Rainier National Park",
+        "rank": "3",
+        "location": "Washington",
+        "score": 46.0,
+        "accessibility": 10.0,
+        "recreation": 10.0,
+        "crowds": 7.0,
+        "amenities": 9.0,
+        "scenery": 10.0,
+        "lat": 46.8799663,
+        "lng": -121.7269094
+    },
+    {
+        "name": "Yosemite National Park",
+        "rank": "4",
+        "location": "California",
+        "score": 43.0,
+        "accessibility": 9.5,
+        "recreation": 10.0,
+        "crowds": 3.5,
+        "amenities": 10.0,
+        "scenery": 10.0,
+        "lat": 37.8651011,
+        "lng": -119.5383294
+    },
+    {
+        "name": "Redwood National Park",
+        "rank": "5",
+        "location": "California",
+        "score": 43.0,
+        "accessibility": 9.0,
+        "recreation": 8.0,
+        "crowds": 7.0,
+        "amenities": 10.0,
+        "scenery": 9.0,
+        "lat": 41.4017156,
+        "lng": -124.041711
+    },
+    {
+        "name": "Glacier National Park",
+        "rank": "6",
+        "location": "Montana",
+        "score": 42.5,
+        "accessibility": 6.5,
+        "recreation": 10.0,
+        "crowds": 6.0,
+        "amenities": 10.0,
+        "scenery": 10.0,
+        "lat": 48.7596128,
+        "lng": -113.7870225
+    },
+    {
+        "name": "Sequoia National Park",
+        "rank": "7",
+        "location": "California",
+        "score": 42.5,
+        "accessibility": 9.0,
+        "recreation": 8.5,
+        "crowds": 7.5,
+        "amenities": 8.5,
+        "scenery": 9.0,
+        "lat": 36.4863668,
+        "lng": -118.5657516
+    },
+    {
+        "name": "Rocky Mountain National Park",
+        "rank": "8",
+        "location": "Colorado",
+        "score": 42.5,
+        "accessibility": 9.0,
+        "recreation": 10.0,
+        "crowds": 4.0,
+        "amenities": 10.0,
+        "scenery": 9.5,
+        "lat": 40.3427932,
+        "lng": -105.6836389
+    },
+    {
+        "name": "Voyageurs National Park",
+        "rank": "9",
+        "location": "Minnesota",
+        "score": 42.0,
+        "accessibility": 4.5,
+        "recreation": 10.0,
+        "crowds": 10.0,
+        "amenities": 10.0,
+        "scenery": 7.5,
+        "lat": 48.4711276,
+        "lng": -92.8458393
+    },
+    {
+        "name": "Great Smoky Mountains National Park",
+        "rank": "10",
+        "location": "Tennessee & North Carolina",
+        "score": 42.0,
+        "accessibility": 10.0,
+        "recreation": 8.0,
+        "crowds": 5.5,
+        "amenities": 10.0,
+        "scenery": 8.5,
+        "lat": 35.6130503,
+        "lng": -83.55315370000001
+    },
+    {
+        "name": "Grand Canyon National Park",
+        "rank": "11",
+        "location": "Arizona",
+        "score": 41.0,
+        "accessibility": 8.0,
+        "recreation": 9.0,
+        "crowds": 4.0,
+        "amenities": 10.0,
+        "scenery": 10.0,
+        "lat": 36.2678855,
+        "lng": -112.3535253
+    },
+    {
+        "name": "Yellowstone National Park",
+        "rank": "12",
+        "location": "Wyoming",
+        "score": 39.5,
+        "accessibility": 7.0,
+        "recreation": 10.0,
+        "crowds": 2.5,
+        "amenities": 10.0,
+        "scenery": 10.0,
+        "lat": 44.427963,
+        "lng": -110.588455
+    },
+    {
+        "name": "Death Valley National Park",
+        "rank": "13",
+        "location": "California",
+        "score": 39.0,
+        "accessibility": 7.0,
+        "recreation": 9.0,
+        "crowds": 7.0,
+        "amenities": 7.0,
+        "scenery": 9.0,
+        "lat": 36.5322649,
+        "lng": -116.9325408
+    },
+    {
+        "name": "Zion National Park",
+        "rank": "14",
+        "location": "Utah",
+        "score": 38.0,
+        "accessibility": 9.0,
+        "recreation": 10.0,
+        "crowds": 0.5,
+        "amenities": 9.5,
+        "scenery": 9.0,
+        "lat": 37.2982022,
+        "lng": -113.0263005
+    },
+    {
+        "name": "Great Sand Dunes National Park",
+        "rank": "15",
+        "location": "Colorado",
+        "score": 38.0,
+        "accessibility": 4.5,
+        "recreation": 7.5,
+        "crowds": 10.0,
+        "amenities": 7.0,
+        "scenery": 9.0,
+        "lat": 37.7935263,
+        "lng": -105.5930539
+    },
+    {
+        "name": "Kenai Fjords National Park",
+        "rank": "16",
+        "location": "Alaska",
+        "score": 38.0,
+        "accessibility": 4.5,
+        "recreation": 7.5,
+        "crowds": 10.0,
+        "amenities": 7.0,
+        "scenery": 9.0,
+        "lat": 59.84867449999999,
+        "lng": -150.1878803
+    },
+    {
+        "name": "Arches National Park",
+        "rank": "17",
+        "location": "Utah",
+        "score": 37.0,
+        "accessibility": 7.0,
+        "recreation": 7.0,
+        "crowds": 7.0,
+        "amenities": 8.0,
+        "scenery": 8.5,
+        "lat": 38.733081,
+        "lng": -109.5925139
+    },
+    {
+        "name": "North Cascades National Park",
+        "rank": "18",
+        "location": "Washington",
+        "score": 37.5,
+        "accessibility": 6.0,
+        "recreation": 8.0,
+        "crowds": 9.0,
+        "amenities": 5.0,
+        "scenery": 9.5,
+        "lat": 48.7718174,
+        "lng": -121.2984648
+    },
+    {
+        "name": "Denali National Park",
+        "rank": "19",
+        "location": "Alaska",
+        "score": 37.0,
+        "accessibility": 6.0,
+        "recreation": 8.0,
+        "crowds": 9.0,
+        "amenities": 5.0,
+        "scenery": 9.5,
+        "lat": 63.1148002,
+        "lng": -151.1926058
+    },
+    {
+        "name": "Wrangell St",
+        "rank": "20",
+        "location": "Alaska",
+        "score": 37.0,
+        "accessibility": 6.0,
+        "recreation": 8.0,
+        "crowds": 9.0,
+        "amenities": 5.0,
+        "scenery": 9.5,
+        "lat": 61.7104448,
+        "lng": -142.9856804
+    },
+    {
+        "name": "Acadia National Park",
+        "rank": "21",
+        "location": "Maine",
+        "score": 37.0,
+        "accessibility": 6.5,
+        "recreation": 7.5,
+        "crowds": 6.0,
+        "amenities": 9.0,
+        "scenery": 8.0,
+        "lat": 44.3385559,
+        "lng": -68.2733346
+    },
+    {
+        "name": "Capitol Reef National Park",
+        "rank": "22",
+        "location": "Utah",
+        "score": 37.0,
+        "accessibility": 6.5,
+        "recreation": 7.0,
+        "crowds": 9.0,
+        "amenities": 7.0,
+        "scenery": 7.5,
+        "lat": 38.0877312,
+        "lng": -111.1354983
+    },
+    {
+        "name": "Joshua Tree National Park",
+        "rank": "23",
+        "location": "for old Hollywood television productions like Star Trek",
+        "score": 37.0,
+        "accessibility": 8.0,
+        "recreation": 8.0,
+        "crowds": 7.0,
+        "amenities": 7.0,
+        "scenery": 7.0,
+        "lat": 33.873415,
+        "lng": -115.9009923
+    },
+    {
+        "name": "Canyonlands National Park",
+        "rank": "24",
+        "location": "Utah",
+        "score": 37.0,
+        "accessibility": 5.5,
+        "recreation": 7.0,
+        "crowds": 8.5,
+        "amenities": 7.0,
+        "scenery": 9.0,
+        "lat": 38.2135733,
+        "lng": -109.9025345
+    },
+    {
+        "name": "Badlands National Park",
+        "rank": "25",
+        "location": "South Dakota",
+        "score": 37.0,
+        "accessibility": 6.5,
+        "recreation": 7.0,
+        "crowds": 9.0,
+        "amenities": 7.0,
+        "scenery": 7.5,
+        "lat": 43.8553804,
+        "lng": -102.3396912
+    },
+    {
+        "name": "Bryce Canyon National Park",
+        "rank": "26",
+        "location": "Utah",
+        "score": 37.0,
+        "accessibility": 6.5,
+        "recreation": 6.5,
+        "crowds": 7.0,
+        "amenities": 9.0,
+        "scenery": 8.0,
+        "lat": 37.5930377,
+        "lng": -112.1870895
+    },
+    {
+        "name": "Kings Canyon National Park",
+        "rank": "27",
+        "location": "California",
+        "score": 37.0,
+        "accessibility": 5.5,
+        "recreation": 10.0,
+        "crowds": 6.5,
+        "amenities": 7.0,
+        "scenery": 8.0,
+        "lat": 36.8878548,
+        "lng": -118.5551477
+    },
+    {
+        "name": "Shenandoah National Park",
+        "rank": "28",
+        "location": "Virginia",
+        "score": 37.0,
+        "accessibility": 9.0,
+        "recreation": 7.0,
+        "crowds": 7.0,
+        "amenities": 7.5,
+        "scenery": 6.5,
+        "lat": 38.4754706,
+        "lng": -78.4534573
+    },
+    {
+        "name": "Hawai\u2019i Volcanoes National Park",
+        "rank": "29",
+        "location": "Hawaii",
+        "score": 36.5,
+        "accessibility": 5.0,
+        "recreation": 7.0,
+        "crowds": 9.0,
+        "amenities": 7.5,
+        "scenery": 8.0,
+        "lat": 19.4290543,
+        "lng": -155.2568892
+    },
+    {
+        "name": "Petrified Forest\u00a0National Park",
+        "rank": "30",
+        "location": "Arizona",
+        "score": 36.5,
+        "accessibility": 7.0,
+        "recreation": 7.0,
+        "crowds": 9.0,
+        "amenities": 5.5,
+        "scenery": 8.0,
+        "lat": 35.0036935,
+        "lng": -109.7889229
+    },
+    {
+        "name": "Mesa Verde National Park",
+        "rank": "31",
+        "location": "Colorado",
+        "score": 36.0,
+        "accessibility": 5.5,
+        "recreation": 7.0,
+        "crowds": 8.5,
+        "amenities": 8.0,
+        "scenery": 7.0,
+        "lat": 37.2308729,
+        "lng": -108.4618335
+    },
+    {
+        "name": "Crater Lake National Park",
+        "rank": "32",
+        "location": "Oregon",
+        "score": 35.5,
+        "accessibility": 6.0,
+        "recreation": 6.5,
+        "crowds": 6.0,
+        "amenities": 8.5,
+        "scenery": 8.5,
+        "lat": 42.9294762,
+        "lng": -122.1279394
+    },
+    {
+        "name": "Lassen Volcanic National Park",
+        "rank": "33",
+        "location": "California",
+        "score": 35.5,
+        "accessibility": 6.0,
+        "recreation": 7.5,
+        "crowds": 7.0,
+        "amenities": 7.0,
+        "scenery": 8.0,
+        "lat": 40.49766,
+        "lng": -121.4206552
+    },
+    {
+        "name": "Black Canyon of the Gunnison National Park",
+        "rank": "34",
+        "location": "Colorado",
+        "score": 35.5,
+        "accessibility": 4.5,
+        "recreation": 6.0,
+        "crowds": 10.0,
+        "amenities": 7.0,
+        "scenery": 8.0,
+        "lat": 38.5753936,
+        "lng": -107.7415961
+    },
+    {
+        "name": "Katmai National Park",
+        "rank": "35",
+        "location": "Alaska",
+        "score": 35.0,
+        "accessibility": 1.0,
+        "recreation": 10.0,
+        "crowds": 10.0,
+        "amenities": 4.0,
+        "scenery": 10.0,
+        "lat": 58.5861984,
+        "lng": -154.9697748
+    },
+    {
+        "name": "Virgin Islands National Park",
+        "rank": "36",
+        "location": "US Virgin Islands",
+        "score": 35.0,
+        "accessibility": 4.5,
+        "recreation": 8.0,
+        "crowds": 8.0,
+        "amenities": 7.0,
+        "scenery": 7.5,
+        "lat": 18.3435164,
+        "lng": -64.7501256
+    },
+    {
+        "name": "Saguaro National Park",
+        "rank": "37",
+        "location": "Arizona",
+        "score": 35.0,
+        "accessibility": 8.0,
+        "recreation": 6.0,
+        "crowds": 8.0,
+        "amenities": 6.0,
+        "scenery": 7.0,
+        "lat": 32.2967359,
+        "lng": -111.166615
+    },
+    {
+        "name": "Haleakala National Park",
+        "rank": "38",
+        "location": "Hawaii",
+        "score": 34.0,
+        "accessibility": 5.5,
+        "recreation": 7.5,
+        "crowds": 6.5,
+        "amenities": 7.0,
+        "scenery": 7.5,
+        "lat": 20.7203826,
+        "lng": -156.1551524
+    },
+    {
+        "name": "Big Bend National Park",
+        "rank": "39",
+        "location": "Texas",
+        "score": 34.0,
+        "accessibility": 3.5,
+        "recreation": 7.0,
+        "crowds": 10.0,
+        "amenities": 6.5,
+        "scenery": 7.0,
+        "lat": 29.2498194,
+        "lng": -103.2501636
+    },
+    {
+        "name": "Theodore Roosevelt National Park",
+        "rank": "40",
+        "location": "North Dakota",
+        "score": 33.5,
+        "accessibility": 3.5,
+        "recreation": 6.5,
+        "crowds": 10.0,
+        "amenities": 7.0,
+        "scenery": 6.5,
+        "lat": 46.978965,
+        "lng": -103.5387091
+    },
+    {
+        "name": "Wind Cave National Park",
+        "rank": "41",
+        "location": "South Dakota",
+        "score": 33.5,
+        "accessibility": 6.5,
+        "recreation": 6.0,
+        "crowds": 8.5,
+        "amenities": 6.5,
+        "scenery": 6.0,
+        "lat": 43.57243880000001,
+        "lng": -103.4415644
+    },
+    {
+        "name": "Guadalupe Mountains National Park",
+        "rank": "42",
+        "location": "Texas",
+        "score": 33.5,
+        "accessibility": 4.5,
+        "recreation": 6.5,
+        "crowds": 10.0,
+        "amenities": 6.0,
+        "scenery": 6.5,
+        "lat": 31.9233303,
+        "lng": -104.8663109
+    },
+    {
+        "name": "Glacier Bay\u00a0National Park",
+        "rank": "43",
+        "location": "Alaska",
+        "score": 33.0,
+        "accessibility": 2.0,
+        "recreation": 8.0,
+        "crowds": 10.0,
+        "amenities": 3.0,
+        "scenery": 10.0,
+        "lat": 58.66580729999999,
+        "lng": -136.9002147
+    },
+    {
+        "name": "Isle Royale National Park",
+        "rank": "44",
+        "location": "Michigan",
+        "score": 32.5,
+        "accessibility": 3.0,
+        "recreation": 6.5,
+        "crowds": 9.0,
+        "amenities": 6.5,
+        "scenery": 7.5,
+        "lat": 47.9958654,
+        "lng": -88.9092899
+    },
+    {
+        "name": "Everglades\u00a0National Park",
+        "rank": "45",
+        "location": "Florida",
+        "score": 32.5,
+        "accessibility": 5.0,
+        "recreation": 7.0,
+        "crowds": 7.5,
+        "amenities": 7.0,
+        "scenery": 6.0,
+        "lat": 25.2866155,
+        "lng": -80.89865089999999
+    },
+    {
+        "name": "Great Basin National Park",
+        "rank": "46",
+        "location": "Nevada",
+        "score": 32.0,
+        "accessibility": 4.0,
+        "recreation": 7.0,
+        "crowds": 8.5,
+        "amenities": 5.0,
+        "scenery": 7.5,
+        "lat": 38.9299798,
+        "lng": -114.2633787
+    },
+    {
+        "name": "White Sands National Park",
+        "rank": "47",
+        "location": "New Mexico",
+        "score": 32.0,
+        "accessibility": 5.0,
+        "recreation": 5.5,
+        "crowds": 9.0,
+        "amenities": 6.0,
+        "scenery": 6.5,
+        "lat": 32.7872403,
+        "lng": -106.3256816
+    },
+    {
+        "name": "Congaree National Park",
+        "rank": "48",
+        "location": "South Carolina",
+        "score": 32.0,
+        "accessibility": 6.5,
+        "recreation": 6.0,
+        "crowds": 8.5,
+        "amenities": 6.0,
+        "scenery": 5.0,
+        "lat": 33.7918719,
+        "lng": -80.7490486
+    },
+    {
+        "name": "Lake Clark National Park",
+        "rank": "49",
+        "location": "Alaska",
+        "score": 31.5,
+        "accessibility": 1.0,
+        "recreation": 9.0,
+        "crowds": 10.0,
+        "amenities": 1.5,
+        "scenery": 10.0,
+        "lat": 60.6241855,
+        "lng": -153.3058417
+    },
+    {
+        "name": "Channel Islands\u00a0National Park",
+        "rank": "50",
+        "location": "California",
+        "score": 31.0,
+        "accessibility": 4.0,
+        "recreation": 6.5,
+        "crowds": 9.0,
+        "amenities": 3.5,
+        "scenery": 8.0,
+        "lat": 34.0149999,
+        "lng": -119.7516345
+    },
+    {
+        "name": "Dry Tortugas National Park",
+        "rank": "51",
+        "location": "Florida",
+        "score": 30.5,
+        "accessibility": 4.0,
+        "recreation": 7.0,
+        "crowds": 9.5,
+        "amenities": 2.5,
+        "scenery": 7.5,
+        "lat": 24.628477,
+        "lng": -82.87318739999999
+    },
+    {
+        "name": "Biscayne National Park",
+        "rank": "52",
+        "location": "Florida",
+        "score": 30.5,
+        "accessibility": 5.0,
+        "recreation": 6.0,
+        "crowds": 8.0,
+        "amenities": 5.0,
+        "scenery": 6.5,
+        "lat": 25.4824229,
+        "lng": -80.20831030000001
+    },
+    {
+        "name": "New River Gorge National Park",
+        "rank": "53",
+        "location": "West Virginia",
+        "score": 30.0,
+        "accessibility": 6.0,
+        "recreation": 7.5,
+        "crowds": 7.0,
+        "amenities": 3.0,
+        "scenery": 6.5,
+        "lat": 37.8707083,
+        "lng": -81.0531025
+    },
+    {
+        "name": "Mammoth Cave National Park",
+        "rank": "54",
+        "location": "Kentucky",
+        "score": 30.0,
+        "accessibility": 7.0,
+        "recreation": 3.0,
+        "crowds": 8.5,
+        "amenities": 7.0,
+        "scenery": 4.5,
+        "lat": 37.1861597,
+        "lng": -86.0999753
+    },
+    {
+        "name": "American Samoa National Park",
+        "rank": "55",
+        "location": "American Samoa",
+        "score": 29.0,
+        "accessibility": 1.0,
+        "recreation": 7.0,
+        "crowds": 10.0,
+        "amenities": 2.0,
+        "scenery": 9.0,
+        "lat": -14.2579491,
+        "lng": -170.6859778
+    },
+    {
+        "name": "Pinnacles National Park",
+        "rank": "56",
+        "location": "California",
+        "score": 29.0,
+        "accessibility": 6.5,
+        "recreation": 6.0,
+        "crowds": 8.0,
+        "amenities": 3.0,
+        "scenery": 5.5,
+        "lat": 36.4905655,
+        "lng": -121.1824925
+    },
+    {
+        "name": "Gates of the Arctic National Park",
+        "rank": "57",
+        "location": "Alaska",
+        "score": 28.0,
+        "accessibility": 0.0,
+        "recreation": 8.0,
+        "crowds": 10.0,
+        "amenities": 0.0,
+        "scenery": 10.0,
+        "lat": 67.6854972,
+        "lng": -153.3241121
+    },
+    {
+        "name": "Cuyahoga Valley National Park",
+        "rank": "58",
+        "location": "near Cleveland makes it an easy stop for any park-lover to add on their trip to the city.",
+        "score": 28.0,
+        "accessibility": 7.0,
+        "recreation": 4.0,
+        "crowds": 7.0,
+        "amenities": 6.0,
+        "scenery": 4.0,
+        "lat": 41.2808248,
+        "lng": -81.56781199999999
+    },
+    {
+        "name": "Indiana Dunes National Park",
+        "rank": "59",
+        "location": "Indiana",
+        "score": 27.0,
+        "accessibility": 7.5,
+        "recreation": 4.0,
+        "crowds": 6.5,
+        "amenities": 5.5,
+        "scenery": 4.5,
+        "lat": 41.6532678,
+        "lng": -87.0524338
+    },
+    {
+        "name": "Carlsbad Caverns National Park",
+        "rank": "60",
+        "location": "New Mexico",
+        "score": 27.5,
+        "accessibility": 4.0,
+        "recreation": 3.0,
+        "crowds": 9.0,
+        "amenities": 6.5,
+        "scenery": 5.0,
+        "lat": 32.137045,
+        "lng": -104.5437529
+    },
+    {
+        "name": "Kobuk Valley National Park",
+        "rank": "61",
+        "location": "Alaska",
+        "score": 27.0,
+        "accessibility": 0.0,
+        "recreation": 7.0,
+        "crowds": 10.0,
+        "amenities": 0.0,
+        "scenery": 10.0,
+        "lat": 67.35751069999999,
+        "lng": -159.213676
+    },
+    {
+        "name": "Hot Springs National Park",
+        "rank": "62",
+        "location": "Arkansas",
+        "score": 25.5,
+        "accessibility": 6.5,
+        "recreation": 3.5,
+        "crowds": 6.5,
+        "amenities": 7.0,
+        "scenery": 2.0,
+        "lat": 34.5269095,
+        "lng": -93.0690934
+    },
+    {
+        "name": "Gateway Arch National Park",
+        "rank": "63",
+        "location": "Missouri",
+        "score": 16.5,
+        "accessibility": 9.0,
+        "recreation": 1.0,
+        "crowds": 2.5,
+        "amenities": 3.0,
+        "scenery": 1.0,
+        "lat": 38.6248848,
+        "lng": -90.1858982
+    }
+]
+
+        function initMap() {
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: { lat: 39.8283, lng: -98.5795 } // Center of the US
+            });
+
+            parksData.forEach(function (park) {
+                var markerSize = 2 * Math.exp(park.scenery / 5); // Adjust size based on score (assuming score range 0-10)
+                var color = getColorForScore(park.score); // Get color based on score
+
+                var marker = new google.maps.Marker({
+                    position: { lat: park.lat, lng: park.lng },
+                    map: map,
+                    icon: {
+                        path: google.maps.SymbolPath.CIRCLE,
+                        fillColor: color,
+                        fillOpacity: 1,
+                        strokeWeight: 0,
+                        scale: markerSize
+                    }
+                });
+
+                marker.addListener('click', function () {
+                    // Show park information or perform an action on marker click
+                    alert(park.name + '\n' + 'location: ' + park.location + '/n' + 'rank' + park.rank + '\n' + 'score: ' + park.score + '\n' + 'accessibility: ' +  park.accessibility + '\n' + 'recreation: ' + park.recreation + '\n' + 'crowds: ' + park.crowds + '\n' + 'amenities: ' + park.amenities + '\n' + 'scenery: ' + park.scenery); // + '\n' + 'lat: '  + park.lat + '\n' + 'lng: ' + park.lng);
+
+                });
+
+
+                function getColorForScore(score) {
+                    // Calculate color based on score
+                    var red = Math.round((35 - score) * 255 / 35);
+                    var green = Math.round((score - 15) * 255 / 35);
+                    return 'rgb(' + red + ', ' + green + ', 0)';
+                }
+            });
+        }
+    </script>
+    <script async defer src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&callback=initMap"></script>
+</body>
+</html>
